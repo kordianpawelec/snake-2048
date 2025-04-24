@@ -95,9 +95,7 @@ class Score:
     def get_surface(self):
         self.score_surface = self.score_font.render('Score : ' + str(self.score), True, self.colour)
         self.score_rect = self.score_surface.get_rect()
-        return self.score_surface, self.score_rect
-    
-        
+        return self.score_surface, self.score_rect    
         
     
 class Game_over:
@@ -130,9 +128,6 @@ class Play:
         self.game_over = Game_over(self.game_window, self.score)
         
         
-        
-    
- 
     def start(self): 
         x,y = self.score.get_surface()
         run = True
@@ -152,10 +147,18 @@ class Play:
             
             if self.fruit.fruit_collision_check():
                 self.snake.add_segment()
+                self.score.score =+ 10
 
             if not self.fruit.fruit_spawn:
                 self.fruit.drop_fruit()
 
+
+            if self.snake.snake_body[0][0] > window_x or self.snake.snake_body[0][0] < 0 or self.snake.snake_body[0][1] > window_y or self.snake.snake_body[0][1] < 0:
+                print('x: ', self.snake.snake_body[0][0],'y: ', self.snake.snake_body[0][1])
+                print('winx: ', window_x, 'winy: ', window_y)
+                self.game_over.update_end()
+            
+            
             for pos in self.snake.snake_body:
                 pygame.draw.rect(self.game_window, green, pygame.Rect(pos[0], pos[1], 10, 10))
                 pygame.draw.rect(self.game_window, white, pygame.Rect(self.fruit.fruit_position[0], self.fruit.fruit_position[1], 10, 10))
