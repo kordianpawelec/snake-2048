@@ -166,10 +166,9 @@ class Play:
                 else:
                     x = blue
                 pygame.draw.rect(self.game_window, x, pygame.Rect(pos[0], pos[1], 10, 10))
-                pygame.draw.rect(self.game_window, white, pygame.Rect(self.fruit.fruit_position[0], self.fruit.fruit_position[1], 10, 10))
-                
-            pos = self.snake.snake_body[0]
-            pygame.draw.rect(self.game_window, red, pygame.Rect(pos[0], pos[1], 10, 10))
+            
+            
+            pygame.draw.rect(self.game_window, white, pygame.Rect(self.fruit.fruit_position[0], self.fruit.fruit_position[1], 10, 10))
             
             
             for event in pygame.event.get():
@@ -191,6 +190,78 @@ class Play:
             pygame.display.update()
             pygame.time.Clock().tick(15)
             
+            
+            
+class My_Q_Model:
+    def __init__(self, snake, fruit):
+        self.snake = snake
+        self.fruit = fruit
+        self.head_pos = [0,0]   
+        self.fruit_pos = [0,0]
+        
+        
+    def position_fruit_to_head(self):
+        self.head_pos = self.snake.snake_body[0]
+        self.head_dir = self.snake.direction
+        
+    
+    def fruit(self):
+        self.fruit_pos = self.fruit.fruit_position
+        
+        
+    def food_dir(self, head, fruit):
+        head_x = head[0]
+        head_y = head[1]
+        fruit_x = fruit[0]
+        fruit_y = fruit[1]
+        states = [0,0,0,0] #if 1,1,1,1 => left,right,up,down
+        
+        
+        if head_x < fruit_x:
+            states[0] = 1
+        else:
+            states[0] = 0
+        
+        if head_x > fruit_x:
+            states[1] = 1
+        else:
+            states[1] = 0
+            
+        if head_y > fruit_y:
+            states[2] = 1
+        else:
+            states[2] = 0
+            
+        if head_y < fruit_y:
+            states[3] = 1
+        else:
+            states[3] = 0
+            
+        food_left, food_right, food_up, food_down = states
+        return food_left, food_right, food_up, food_down
+        
+    def moving(self):
+        if self.direction == 'UP':
+            self.snake_position[1] -= 10
+        if self.direction == 'DOWN':
+            self.snake_position[1] += 10
+        if self.direction == 'LEFT':
+            self.snake_position[0] -= 10
+        if self.direction == 'RIGHT':
+            self.snake_position[0] += 10        
+        
+
+    def danger_ahead(self, head, head_dir, body, x1 = 0, y1 = 0, x2 = window_x, y2 = window_y):
+        directions = {'UP', 'DOWN', 'LEFT', 'RIGHT'}
+        head_x = head[0]
+        head_y = head[1]
+        for segment in body:
+            pass
+        
+        pass
+           
+        
+        
 if __name__ == '__main__':
     
     play = Play()
